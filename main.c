@@ -3,6 +3,11 @@
 #include <unistd.h>
 #include <string.h>
 
+/**
+ * main - Simple Shell main function
+ * @void: argument
+ * Return: 0 Always (success)
+ */
 
 int main(void){
     char *cmd = NULL, *cmd_cpy = NULL, *token = NULL;
