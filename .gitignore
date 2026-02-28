@@ -1,0 +1,17 @@
+# Executables
+a.out
+shell
+shs
+*.out
+
+# Object files
+*.o
+
+# Debug files
+*.gdb
+
+# Valgrind logs
+vgcore.*
+
+# OS files
+.DS_Store
