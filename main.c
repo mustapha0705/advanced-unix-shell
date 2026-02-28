@@ -20,6 +20,7 @@ int main(void){
     
     /* Display prompt and read input */
     printf("mustapha$ ");
+    fflush(stdout);
     if(getline(&cmd, &len, stdin) == -1){
         perror("An erro occured while reading line");
         free(cmd);
@@ -28,6 +29,11 @@ int main(void){
 
     /* preserve original input for second tokenization pass */
     cmd_cpy = strdup(cmd);
+    if(!cmd_cpy){
+        perror("strdup failed");
+        free(cmd);
+        return (1);
+    }
 
     /* First pass: count number of arguments */
     token = strtok(cmd, delim);
@@ -38,6 +44,12 @@ int main(void){
     }
 
     argv = malloc(sizeof(char *) * (argc+1));
+    if(!argv){
+        perror("Failed to allocate memeory");
+        free(cmd);
+        free(cmd_cpy);
+        return (1);
+    }
 
     /* Second pass: populate argv array */
     token = strtok(cmd_cpy, delim);
