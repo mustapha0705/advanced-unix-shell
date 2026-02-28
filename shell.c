@@ -19,7 +19,7 @@ int main(void){
     size_t len = 0;
     
     /* Display prompt and read input */
-    printf("mustapha$ ");
+    printf("hsh$ ");
     fflush(stdout);
     if(getline(&cmd, &len, stdin) == -1){
         perror("An erro occured while reading line");
@@ -60,14 +60,6 @@ int main(void){
         i++;
     }
     argv[i] = NULL;
-    
-    /* Debug: print parsed arguments */
-    int j = 0;
-    while (argv[j])
-    {
-        printf("%s\n", argv[j++]);
-    }
-    printf("\n");
 
     free(cmd);
     free(cmd_cpy);
