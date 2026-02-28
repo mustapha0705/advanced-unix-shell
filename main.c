@@ -48,7 +48,7 @@ int main(void){
     }
     printf("\n");
 
-    free(cmd), free(cmd_cpy), free(token);
+    free(cmd), free(cmd_cpy);
 
     return (0);
 }
