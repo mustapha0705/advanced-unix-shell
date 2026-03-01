@@ -20,12 +20,17 @@ int main(void){
     char **argv;
     size_t len = 0;
     
-    /* read line */
+    
     line = readline();
+    /* Handle EOF (Ctrl+D)*/
     if (line == NULL){
-        perror("Error reading line");
+        if(isatty(STDIN_FILENO)){
+            if(write(STDOUT_FILENO, "\n", 1) == -1){
+                return (1);
+            }
+        }
         free(line);
-        return (1);
+        return (0);
     }
 
     /* preserve original input for second tokenization pass */
