@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include <string.h>
 
+char *readline(void);
+
 /**
  * main - Entry point for shell prototype.
  * Reads user input, tokenizes it into arguments,
@@ -12,31 +14,30 @@
  */
 
 int main(void){
-    char *cmd = NULL, *cmd_cpy = NULL, *token = NULL;
+    char *line = NULL, *line_cpy = NULL, *token = NULL;
     char *delim = " \n";
     int argc = 0, i = 0;
     char **argv;
     size_t len = 0;
     
-    /* Display prompt and read input */
-    printf("hsh$ ");
-    fflush(stdout);
-    if(getline(&cmd, &len, stdin) == -1){
-        perror("An erro occured while reading line");
-        free(cmd);
+    /* read line */
+    line = readline();
+    if (line == NULL){
+        perror("Error reading line");
+        free(line);
         return (1);
     }
 
     /* preserve original input for second tokenization pass */
-    cmd_cpy = strdup(cmd);
-    if(!cmd_cpy){
+    line_cpy = strdup(line);
+    if(!line_cpy){
         perror("strdup failed");
-        free(cmd);
+        free(line);
         return (1);
     }
 
     /* First pass: count number of arguments */
-    token = strtok(cmd, delim);
+    token = strtok(line, delim);
     while (token)
     {
         token = strtok(NULL, delim);
@@ -46,13 +47,13 @@ int main(void){
     argv = malloc(sizeof(char *) * (argc+1));
     if(!argv){
         perror("Failed to allocate memeory");
-        free(cmd);
-        free(cmd_cpy);
+        free(line);
+        free(line_cpy);
         return (1);
     }
 
     /* Second pass: populate argv array */
-    token = strtok(cmd_cpy, delim);
+    token = strtok(line_cpy, delim);
     while (token)
     {
         argv[i] = token;
@@ -61,9 +62,34 @@ int main(void){
     }
     argv[i] = NULL;
 
-    free(cmd);
-    free(cmd_cpy);
+    /* Debug: print parsed arguments */
+    int j = 0;
+    while (argv[j])
+    {
+        printf("%s\n", argv[j++]);
+    }
+
+    free(line);
+    free(line_cpy);
     free(argv);
 
     return (0);
+}
+
+char *readline(void){
+    char *line = NULL;
+    size_t len = 0;
+
+    if (isatty(STDIN_FILENO) == 1){
+        if(write(STDOUT_FILENO, "($) ", 4) == -1){
+            return (NULL);
+        }
+    }
+    
+    if(getline(&line, &len, stdin) == -1){
+        free(line);
+        return (NULL);
+    }
+
+    return (line);
 }
