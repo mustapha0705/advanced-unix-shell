@@ -46,7 +46,7 @@ int main(void){
 
     argv = malloc(sizeof(char *) * (argc+1));
     if(!argv){
-        perror("Failed to allocate memeory");
+        perror("Failed to allocate memory");
         free(line);
         free(line_cpy);
         return (1);
@@ -80,7 +80,7 @@ char *readline(void){
     char *line = NULL;
     size_t len = 0;
 
-    if (isatty(STDIN_FILENO) == 1){
+    if (isatty(STDIN_FILENO)){
         if(write(STDOUT_FILENO, "($) ", 4) == -1){
             return (NULL);
         }
