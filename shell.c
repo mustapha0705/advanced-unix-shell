@@ -14,16 +14,19 @@ char **tokeniser(char *);
  * Return: 0 on success, 1 on failure
  */
 
-int main(void){
-    char *line = NULL,**command = NULL;
+int main(void)
+{
+    char *line = NULL, **command = NULL;
     int i = 0;
-    
-    
+
     line = readline();
     /* Handle EOF (Ctrl+D)*/
-    if (line == NULL){
-        if(isatty(STDIN_FILENO)){
-            if(write(STDOUT_FILENO, "\n", 1) == -1){
+    if (line == NULL)
+    {
+        if (isatty(STDIN_FILENO))
+        {
+            if (write(STDOUT_FILENO, "\n", 1) == -1)
+            {
                 return (1);
             }
         }
@@ -32,7 +35,8 @@ int main(void){
     }
 
     command = tokeniser(line);
-    if(command == NULL){
+    if (command == NULL)
+    {
         perror("error tokenising");
         free(command);
         free(line);
@@ -51,17 +55,21 @@ int main(void){
     return (0);
 }
 
-char *readline(void){
+char *readline(void)
+{
     char *line = NULL;
     size_t len = 0;
 
-    if (isatty(STDIN_FILENO)){
-        if(write(STDOUT_FILENO, "($) ", 4) == -1){
+    if (isatty(STDIN_FILENO))
+    {
+        if (write(STDOUT_FILENO, "($) ", 4) == -1)
+        {
             return (NULL);
         }
     }
-    
-    if(getline(&line, &len, stdin) == -1){
+
+    if (getline(&line, &len, stdin) == -1)
+    {
         free(line);
         return (NULL);
     }
@@ -69,28 +77,33 @@ char *readline(void){
     return (line);
 }
 
-char **tokeniser(char *line){
+char **tokeniser(char *line)
+{
     char *token = NULL, *tmp = NULL, *delim = " \t\n";
     char **command = NULL;
     int tok_count = 0, i = 0;
 
-    if(!line){
+    if (!line)
+    {
         return (NULL);
     }
 
     tmp = strdup(line);
-    if(!tmp){
+    if (!tmp)
+    {
         free(tmp);
         return (NULL);
     }
 
     token = strtok(tmp, delim);
-    if(!token){
+    if (!token)
+    {
         free(tmp);
         return (NULL);
     }
 
-    while(token){
+    while (token)
+    {
         tok_count++;
         token = strtok(NULL, delim);
     }
@@ -99,7 +112,8 @@ char **tokeniser(char *line){
 
     /* allocate memory for command */
     command = malloc(sizeof(char *) * (tok_count + 1));
-    if(!command){
+    if (!command)
+    {
         free(command);
         return (NULL);
     }
@@ -111,7 +125,7 @@ char **tokeniser(char *line){
         token = strtok(NULL, delim);
         i++;
     }
-    
+
     command[i] = NULL;
 
     return (command);
