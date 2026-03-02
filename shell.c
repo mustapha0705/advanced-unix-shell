@@ -107,7 +107,7 @@ char **tokeniser(char *line){
     token = strtok(line, delim);
     while (token)
     {
-        command[i] = token;
+        command[i] = strdup(token);
         token = strtok(NULL, delim);
         i++;
     }
