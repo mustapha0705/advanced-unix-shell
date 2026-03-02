@@ -4,6 +4,7 @@
 #include <string.h>
 
 char *readline(void);
+char **tokeniser(char *);
 
 /**
  * main - Entry point for shell prototype.
@@ -14,11 +15,8 @@ char *readline(void);
  */
 
 int main(void){
-    char *line = NULL, *line_cpy = NULL, *token = NULL;
-    char *delim = " \n";
-    int argc = 0, i = 0;
-    char **argv;
-    size_t len = 0;
+    char *line = NULL,**command = NULL;
+    int i = 0;
     
     
     line = readline();
@@ -33,50 +31,22 @@ int main(void){
         return (0);
     }
 
-    /* preserve original input for second tokenization pass */
-    line_cpy = strdup(line);
-    if(!line_cpy){
-        perror("strdup failed");
+    command = tokeniser(line);
+    if(command == NULL){
+        perror("error tokenising");
+        free(command);
         free(line);
-        return (1);
+        return 0;
     }
-
-    /* First pass: count number of arguments */
-    token = strtok(line, delim);
-    while (token)
-    {
-        token = strtok(NULL, delim);
-        argc++;
-    }
-
-    argv = malloc(sizeof(char *) * (argc+1));
-    if(!argv){
-        perror("Failed to allocate memory");
-        free(line);
-        free(line_cpy);
-        return (1);
-    }
-
-    /* Second pass: populate argv array */
-    token = strtok(line_cpy, delim);
-    while (token)
-    {
-        argv[i] = token;
-        token = strtok(NULL, delim);
-        i++;
-    }
-    argv[i] = NULL;
 
     /* Debug: print parsed arguments */
-    int j = 0;
-    while (argv[j])
+    while (command[i])
     {
-        printf("%s\n", argv[j++]);
+        printf("%s\n", command[i++]);
     }
 
+    free(command);
     free(line);
-    free(line_cpy);
-    free(argv);
 
     return (0);
 }
@@ -97,4 +67,52 @@ char *readline(void){
     }
 
     return (line);
+}
+
+char **tokeniser(char *line){
+    char *token = NULL, *tmp = NULL, *delim = " \t\n";
+    char **command = NULL;
+    int tok_count = 0, i = 0;
+
+    if(!line){
+        return (NULL);
+    }
+
+    tmp = strdup(line);
+    if(!tmp){
+        free(tmp);
+        return (NULL);
+    }
+
+    token = strtok(tmp, delim);
+    if(!token){
+        free(tmp);
+        return (NULL);
+    }
+
+    while(token){
+        tok_count++;
+        token = strtok(NULL, delim);
+    }
+
+    free(tmp);
+
+    /* allocate memory for command */
+    command = malloc(sizeof(char *) * (tok_count + 1));
+    if(!command){
+        free(command);
+        return (NULL);
+    }
+
+    token = strtok(line, delim);
+    while (token)
+    {
+        command[i] = token;
+        token = strtok(NULL, delim);
+        i++;
+    }
+    
+    command[i] = NULL;
+
+    return (command);
 }
