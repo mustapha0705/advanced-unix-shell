@@ -4,7 +4,7 @@
 #include <string.h>
 
 char *readline(void);
-char **tokeniser(char *);
+char **tokeniser(char *line);
 
 /**
  * main - Entry point for shell prototype.
@@ -17,40 +17,41 @@ char **tokeniser(char *);
 int main(void)
 {
     char *line = NULL, **command = NULL;
-    int i = 0;
 
-    line = readline();
-    /* Handle EOF (Ctrl+D)*/
-    if (line == NULL)
+    while (1)
     {
-        if (isatty(STDIN_FILENO))
+        line = readline();
+        /* Handle EOF (Ctrl+D)*/
+        if (line == NULL)
         {
-            if (write(STDOUT_FILENO, "\n", 1) == -1)
+            if (isatty(STDIN_FILENO))
             {
-                return (1);
+                if (write(STDOUT_FILENO, "\n", 1) == -1)
+                {
+                    return (1);
+                }
             }
+            free(line);
+            return (0);
         }
-        free(line);
-        return (0);
-    }
 
-    command = tokeniser(line);
-    if (command == NULL)
-    {
-        perror("error tokenising");
+        command = tokeniser(line);
+        if (command == NULL)
+        {
+            free(line);
+            continue;
+        }
+
+        /* Debug: print parsed arguments */
+        int j = 0;
+        while (command[j])
+        {
+            printf("%s\n", command[j++]);
+        }
+
         free(command);
         free(line);
-        return 0;
     }
-
-    /* Debug: print parsed arguments */
-    while (command[i])
-    {
-        printf("%s\n", command[i++]);
-    }
-
-    free(command);
-    free(line);
 
     return (0);
 }
