@@ -5,6 +5,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+extern char **environ;
+
 char *readline(void);
 char **tokeniser(char *line);
 int _execute(char **command);
@@ -155,7 +157,7 @@ int _execute(char **command)
 
     if (pid == 0)
     {
-        int val = execve(command[0], command, NULL);
+        int val = execve(command[0], command, environ);
         if (val == -1)
         {
             perror("execve");
