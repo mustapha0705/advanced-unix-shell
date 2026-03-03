@@ -102,7 +102,6 @@ char **tokeniser(char *line)
     tmp = strdup(line);
     if (!tmp)
     {
-        free(tmp);
         return (NULL);
     }
 
