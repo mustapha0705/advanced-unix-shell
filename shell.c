@@ -2,9 +2,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 char *readline(void);
 char **tokeniser(char *line);
+int _execute(char **command);
+void free2Darray(char **array);
 
 /**
  * main - Entry point for shell prototype.
@@ -47,6 +51,16 @@ int main(void)
         while (command[j])
         {
             printf("%s\n", command[j++]);
+        }
+
+        if (strchr(command[0], '/'))
+        {
+            int status;
+            status = _execute(command);
+        }
+        else
+        {
+            continue;
         }
 
         free(command);
@@ -130,4 +144,31 @@ char **tokeniser(char *line)
     command[i] = NULL;
 
     return (command);
+}
+
+int _execute(char **command)
+{
+    int status = 0;
+
+    pid_t pid;
+
+    pid = fork();
+
+    if (pid == 0)
+    {
+        int val = execve(command[0], command, NULL);
+        if (val == -1)
+        {
+            perror("execve");
+            exit(EXIT_FAILURE);
+        }
+
+        return (status);
+    }
+    else
+    {
+        waitpid(pid, &status, 0);;
+    }
+
+    return (status);
 }
