@@ -58,12 +58,8 @@ int main(void)
             int status;
             status = _execute(command);
         }
-        else
-        {
-            continue;
-        }
 
-        free(command);
+        free2Darray(command);
         free(line);
     }
 
@@ -129,7 +125,6 @@ char **tokeniser(char *line)
     command = malloc(sizeof(char *) * (tok_count + 1));
     if (!command)
     {
-        free(command);
         return (NULL);
     }
 
@@ -167,8 +162,27 @@ int _execute(char **command)
     }
     else
     {
-        waitpid(pid, &status, 0);;
+        waitpid(pid, &status, 0);
     }
 
     return (status);
+}
+
+void free2Darray(char **array)
+{
+    int i;
+
+    if (!array)
+    {
+        return;
+    }
+
+    for (i = 0; array[i]; i++)
+    {
+        free(array[i]);
+        array[i] = NULL;
+    }
+
+    free(array);
+    array = NULL;
 }
