@@ -149,6 +149,11 @@ int _execute(char **command)
 
     pid = fork();
 
+    if(pid < 0){
+        perror("fork");
+        return (-1);
+    }
+
     if (pid == 0)
     {
         int val = execve(command[0], command, NULL);
