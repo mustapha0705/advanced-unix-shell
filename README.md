@@ -38,7 +38,6 @@ C Programming Language (C89 Standard), GCC Compiler, Linux System Calls (fork, e
 
 **Development Tools:**
 
-- [Betty Style Guide](https://github.com/alx-tools/Betty)
 - [GCC Compiler Documentation](https://gcc.gnu.org/onlinedocs/)
 - [Valgrind Memory Debugger](https://valgrind.org/docs/manual/manual.html)
 
@@ -57,5 +56,3 @@ C Programming Language (C89 Standard), GCC Compiler, Linux System Calls (fork, e
 Systems Programmer | C/C++ Enthusiast | Low Level Programmer | Backend Engineer
 
 Email: mustapha.mohammedu12@gmail.com
-
----
