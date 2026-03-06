@@ -194,7 +194,6 @@ int _execute(char **command)
         {
             perror("waitpid");
             free(full_cmd);
-            free2Darray(command);
             return -1;
         }
     }
