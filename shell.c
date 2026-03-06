@@ -4,6 +4,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 
 extern char **environ;
 
@@ -11,6 +12,8 @@ char *readline(void);
 char **tokeniser(char *line);
 int _execute(char **command);
 void free2Darray(char **array);
+int is_builtin(char *command);
+char *_getpath(char *command);
 
 /**
  * main - Entry point for shell prototype.
@@ -55,10 +58,20 @@ int main(void)
             printf("%s\n", command[j++]);
         }
 
-        if (strchr(command[0], '/'))
+        // if (strchr(command[0], '/'))
+        // {
+        //     int status;
+        //     _execute(command);
+        // }
+
+        if (is_builtin(command[0]))
         {
-            int status;
-            status = _execute(command);
+            printf("Handle builtins");
+            // TODO: handle_builtin(command);
+        }
+        else
+        {
+            _execute(command);
         }
 
         free2Darray(command);
@@ -144,20 +157,28 @@ char **tokeniser(char *line)
 
 int _execute(char **command)
 {
+    char *full_cmd;
     int status = 0;
 
     pid_t pid;
 
+    full_cmd = _getpath(command[0]);
+    if (!full_cmd)
+    {
+        return 127;
+    }
+
     pid = fork();
 
-    if(pid < 0){
+    if (pid < 0)
+    {
         perror("fork");
         return (-1);
     }
 
     if (pid == 0)
     {
-        int val = execve(command[0], command, environ);
+        int val = execve(full_cmd, command, environ);
         if (val == -1)
         {
             perror("execve");
@@ -166,10 +187,18 @@ int _execute(char **command)
 
         return (status);
     }
+
     else
     {
-        waitpid(pid, &status, 0);
+        if (waitpid(pid, &status, 0) == -1)
+        {
+            perror("waitpid");
+            free(full_cmd);
+            free2Darray(command);
+            return -1;
+        }
     }
+    free(full_cmd);
 
     return (status);
 }
@@ -191,4 +220,75 @@ void free2Darray(char **array)
 
     free(array);
     array = NULL;
+}
+
+int is_builtin(char *command)
+{
+    char *builtins[] =
+        {
+            "exit", "env", "setenv", "unsetenv",
+            "cd", NULL};
+    int i;
+
+    for (i = 0; builtins[i]; i++)
+    {
+        if (strcmp(command, builtins[i]) == 0)
+            return (1);
+    }
+    return (0);
+}
+
+char *_getpath(char *command)
+{
+    char *path_env, *full_cmd, *dir, *path_copy;
+    int i;
+    struct stat st;
+
+    /* Check if the command includes a '/' */
+    for (i = 0; command[i]; i++)
+    {
+        if (command[i] == '/')
+        {
+            if (stat(command, &st) == 0)
+                return (strdup(command));
+
+            return (NULL);
+        }
+    }
+
+    /* Get the PATH environment variable */
+    path_env = getenv("PATH");
+    if (!path_env)
+        return NULL;
+
+    path_copy = strdup(path_env);
+    if (!path_copy)
+        return NULL;
+
+    for (dir = strtok(path_copy, ":"); dir; dir = strtok(NULL, ":"))
+    {
+
+        full_cmd = malloc(strlen(dir) + strlen(command) + 2);
+        if (!full_cmd)
+        {
+            free(path_copy);
+            return (NULL);
+        }
+
+        /* Construct the full command path */
+        strcpy(full_cmd, dir);
+        strcat(full_cmd, "/");
+        strcat(full_cmd, command);
+
+        if (stat(full_cmd, &st) == 0)
+        {
+            free(path_copy);
+            return (full_cmd);
+        }
+
+        free(full_cmd);
+    }
+
+    free(path_copy);
+    return (NULL);
 }
