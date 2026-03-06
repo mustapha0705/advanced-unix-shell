@@ -58,15 +58,9 @@ int main(void)
             printf("%s\n", command[j++]);
         }
 
-        // if (strchr(command[0], '/'))
-        // {
-        //     int status;
-        //     _execute(command);
-        // }
-
         if (is_builtin(command[0]))
         {
-            printf("Handle builtins");
+            printf("Handle builtins\n");
             // TODO: handle_builtin(command);
         }
         else
