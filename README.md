@@ -49,3 +49,13 @@ C Programming Language (C89 Standard), GCC Compiler, Linux System Calls (fork, e
 - [Advanced Programming in the UNIX Environment by W. Richard Stevens](https://www.apuebook.com/)
 
 ---
+
+## 10. Created By
+
+**Mustapha Mohammed** ([@Mustapha0705](https://github.com/mustapha0705))
+
+Systems Programmer | C/C++ Enthusiast | Low Level Programmer | Backend Engineer
+
+Email: mustapha.mohammedu12@gmail.com
+
+---
