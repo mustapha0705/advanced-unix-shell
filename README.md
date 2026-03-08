@@ -59,7 +59,33 @@ C Programming Language (C89 Standard), GCC Compiler, Linux System Calls (fork, e
 
 ---
 
-## 3. Resources
+## 3. API Security Overview
+
+**Note:** This shell is a local command-line interpreter that does not expose network APIs or web services. Security considerations focus on safe system interaction and process management rather than API endpoint protection.
+
+**Key Security Measures:**
+
+- **Input Validation**: All user input is validated before processing. Command arguments are checked for proper format, and built-in commands validate their arguments to prevent malformed input from causing crashes or undefined behavior. This is crucial to prevent command injection and buffer overflow attacks.
+
+- **Memory Safety**: Strict memory management prevents buffer overflows, use-after-free vulnerabilities, and memory leaks. All malloc() calls are checked for NULL returns, and proper bounds checking is performed on string operations. Memory is freed immediately after use to minimize attack surface.
+
+- **Path Traversal Protection**: The PATH resolution mechanism only searches predefined directories from the PATH environment variable, preventing arbitrary file execution from untrusted locations. Commands with `/` are executed directly only if they exist and have proper permissions.
+
+- **Privilege Management**: The shell runs with the same privileges as the user who launches it, preventing privilege escalation. It does not implement setuid/setgid operations and relies on the operating system's permission model.
+
+- **Error Handling**: All system calls (fork, execve, chdir, stat) check return values and handle errors appropriately. Failed operations report errors without exposing sensitive system information that could aid attackers.
+
+- **Environment Variable Sanitization**: Built-in commands that modify environment variables (setenv, unsetenv) validate input to prevent injection of malicious environment values that could affect child process behavior.
+
+- **Command Injection Prevention**: Input tokenization safely splits commands and arguments without evaluating shell metacharacters (`;`, `|`, `&`, `>`, `<`), preventing command chaining exploits common in web applications.
+
+**Why Security Matters:**
+
+Even though this is a local shell, security is crucial because it directly interfaces with the operating system. Improper handling of user input or system calls could allow malicious users to crash the shell, corrupt memory, execute unintended commands, or potentially escalate privileges. Following secure coding practices ensures the shell behaves predictably and safely under all conditions.
+
+---
+
+## 4. Resources
 
 **Learning Materials:**
 
@@ -83,7 +109,7 @@ C Programming Language (C89 Standard), GCC Compiler, Linux System Calls (fork, e
 
 ---
 
-## 4. Created By
+## 5. Created By
 
 **Mustapha Mohammed** ([@Mustapha0705](https://github.com/mustapha0705))
 
