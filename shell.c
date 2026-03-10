@@ -60,25 +60,6 @@ int main(int argc, char **argv)
     return (0);
 }
 
-void free2Darray(char **array)
-{
-    int i;
-
-    if (!array)
-    {
-        return;
-    }
-
-    for (i = 0; array[i]; i++)
-    {
-        free(array[i]);
-        array[i] = NULL;
-    }
-
-    free(array);
-    array = NULL;
-}
-
 int is_builtin(char *command)
 {
     char *builtins[] =
