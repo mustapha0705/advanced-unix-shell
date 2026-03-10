@@ -109,7 +109,55 @@ Even though this is a local shell, security is crucial because it directly inter
 
 ---
 
-## 5. Created By
+## 5. Getting Started
+
+### Compilation
+
+Compile the shell with the following command:
+
+```bash
+gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o shs
+```
+
+### Usage
+
+**Interactive Mode:**
+
+```bash
+$ ./shs
+$ ls
+AUTHORS  README.md  execute.c  handle_builtin.c  handle_path.c  readline.c  shell.c  shell.h  shs  tokeniser.c  tool.c  utils.c
+$ pwd
+/home/mustapha/advanced-unix-shell
+$ echo "Hello, World!"
+Hello, World!
+$ exit
+```
+
+**Non-Interactive Mode:**
+
+```bash
+$ echo "ls -la" | ./hsh
+total 92
+drwxrwxr-x 3 user user  4096 Nov  4 10:30 .
+drwxrwxr-x 5 user user  4096 Nov  3 14:22 ..
+-rw-rw-r-- 1 user user   150 Nov  4 09:15 AUTHORS
+...
+
+$ cat commands.txt
+pwd
+ls
+env
+$ ./hsh < commands.txt
+/home/mustapha/advanced-unix-shell
+AUTHORS  README.md  hsh  main.c  shell.h
+USER=user
+HOME=/home/user
+PATH=/usr/local/bin:/usr/bin:/bin
+...
+```
+
+## 6. Created By
 
 **Mustapha Mohammed** ([@Mustapha0705](https://github.com/mustapha0705))
 
