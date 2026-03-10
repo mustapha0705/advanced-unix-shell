@@ -42,7 +42,6 @@ int main(int argc, char **argv)
 
         if (is_builtin(command[0]))
         {
-            printf("Handle builtins\n");
             handle_builtin(command, argv, &status, idx);
         }
         else
