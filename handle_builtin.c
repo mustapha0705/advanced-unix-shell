@@ -34,7 +34,7 @@ void handle_builtin(char **command, char **argv, int *status, int idx)
     if (strcmp(command[0], "exit") == 0)
         exit_shell(command, argv, status, idx);
     else if (strcmp(command[0], "env") == 0)
-        print_env(command, status);
+        print_env(status);
     /*TODO:
      else if (strcmp(command[0], "setenv") == 0)
          handle_setenv(command, status);
@@ -71,12 +71,10 @@ void exit_shell(char **command, char **argv, int *status, int idx)
             write(STDERR_FILENO, "\n", 1);
 
             free(index);
-            // free2Darray(command);
             (*status) = 2;
             return;
         }
     }
-    // free2Darray(command);
 
     exit(exit_value);
 }
@@ -86,7 +84,7 @@ void exit_shell(char **command, char **argv, int *status, int idx)
  * @command: The env command and its arguments.
  * @status: The exit status of the last command.
  */
-void print_env(char **command, int *status)
+void print_env(int *status)
 {
     int i;
 
@@ -95,6 +93,5 @@ void print_env(char **command, int *status)
         write(STDOUT_FILENO, environ[i], strlen(environ[i]));
         write(STDOUT_FILENO, "\n", 1);
     }
-    // free2Darray(command);
     (*status) = 0;
 }

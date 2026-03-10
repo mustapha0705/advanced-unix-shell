@@ -17,7 +17,7 @@ char *_getpath(char *command);
 int is_builtin(char *command);
 void handle_builtin(char **command, char **argv, int *status, int idx);
 void exit_shell(char **command, char **argv, int *status, int idx);
-void print_env(char **command, int *status);
+void print_env(int *status);
 
 /* ====== utils.c ======*/
 void free2Darray(char **array);
