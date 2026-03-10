@@ -1,16 +1,5 @@
 #include "shell.h"
 
-char *readline(void);
-char **tokeniser(char *line);
-int _execute(char **command);
-void free2Darray(char **array);
-int is_builtin(char *command);
-char *_getpath(char *command);
-
-void handle_builtin(char **command, char **argv, int *status, int idx);
-void exit_shell(char **command, char **argv, int *status, int idx);
-void print_env(char **command, int *status);
-
 /**
  * main - Entry point for shell prototype.
  * Reads user input, tokenizes it into arguments,
@@ -69,28 +58,6 @@ int main(int argc, char **argv)
     }
 
     return (0);
-}
-
-char *readline(void)
-{
-    char *line = NULL;
-    size_t len = 0;
-
-    if (isatty(STDIN_FILENO))
-    {
-        if (write(STDOUT_FILENO, "($) ", 4) == -1)
-        {
-            return (NULL);
-        }
-    }
-
-    if (getline(&line, &len, stdin) == -1)
-    {
-        free(line);
-        return (NULL);
-    }
-
-    return (line);
 }
 
 char **tokeniser(char *line)
@@ -282,14 +249,17 @@ char *_getpath(char *command)
     return (NULL);
 }
 
-void handle_builtin(char **command, char **argv, int *status, int idx){
+void handle_builtin(char **command, char **argv, int *status, int idx)
+{
     // handel builtins
 }
 
-void exit_shell(char **command, char **argv, int *status, int idx){
+void exit_shell(char **command, char **argv, int *status, int idx)
+{
     // handle shell exit
 }
 
-void print_env(char **command, int *status){
+void print_env(char **command, int *status)
+{
     // handle printenv
 }
