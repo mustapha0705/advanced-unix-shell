@@ -11,6 +11,9 @@
 int main(int argc, char **argv)
 {
     char *line = NULL, **command = NULL;
+    int idx = 0;
+    int status = 0;
+    (void)argc;
 
     while (1)
     {
@@ -29,6 +32,7 @@ int main(int argc, char **argv)
             return (0);
         }
 
+        idx++;
         command = tokeniser(line);
         if (command == NULL)
         {
@@ -36,17 +40,10 @@ int main(int argc, char **argv)
             continue;
         }
 
-        /* Debug: print parsed arguments */
-        int j = 0;
-        while (command[j])
-        {
-            printf("%s\n", command[j++]);
-        }
-
         if (is_builtin(command[0]))
         {
             printf("Handle builtins\n");
-            // TODO: handle_builtin(command);
+            handle_builtin(command, argv, &status, idx);
         }
         else
         {
@@ -58,19 +55,4 @@ int main(int argc, char **argv)
     }
 
     return (0);
-}
-
-void handle_builtin(char **command, char **argv, int *status, int idx)
-{
-    // handel builtins
-}
-
-void exit_shell(char **command, char **argv, int *status, int idx)
-{
-    // handle shell exit
-}
-
-void print_env(char **command, int *status)
-{
-    // handle printenv
 }
