@@ -74,3 +74,26 @@ void reverse_string(char *str, int len)
 		end--;
 	}
 }
+
+/**
+ * print_error - Prints an error message to standard error.
+ * @name: The name of the program.
+ * @cmd: The command causing the error.
+ * @idx: The index of the command in the input.
+ */
+void print_error(char *name, char *cmd, int idx)
+{
+	char *index;
+	char mssg[] = ": not found\n";
+
+	index = _itoa(idx);
+
+	write(STDERR_FILENO, name, strlen(name));
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, index, strlen(index));
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, cmd, strlen(cmd));
+	write(STDERR_FILENO, mssg, strlen(mssg));
+
+	free(index);
+}

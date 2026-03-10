@@ -10,7 +10,7 @@ extern char **environ;
 
 char *readline(void);
 char **tokeniser(char *line);
-int _execute(char **command);
+int _execute(char **command, char **argv, int idx);
 char *_getpath(char *command);
 
 /* ====== builtins.c ====== */
@@ -23,6 +23,7 @@ void print_env(char **command, int *status);
 void free2Darray(char **array);
 char *_itoa(int n);
 void reverse_string(char *str, int len);
+void print_error(char *name, char *cmd, int idx);
 
 /* ====== tools.c ====== */
 int is_positive_number(char *str);

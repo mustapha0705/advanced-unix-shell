@@ -6,7 +6,7 @@
  *
  * Return: The exit status of the executed command.
  */
-int _execute(char **command)
+int _execute(char **command, char **argv, int idx)
 {
     char *full_cmd;
     int status = 0;
@@ -16,6 +16,7 @@ int _execute(char **command)
     full_cmd = _getpath(command[0]);
     if (!full_cmd)
     {
+        print_error(argv[0], command[0], idx);
         return 127;
     }
 
