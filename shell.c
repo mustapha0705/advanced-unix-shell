@@ -46,7 +46,7 @@ int main(int argc, char **argv)
         }
         else
         {
-            _execute(command, argv, idx);
+            status = _execute(command, argv, idx);
         }
 
         free2Darray(command);
