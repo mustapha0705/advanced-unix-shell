@@ -137,7 +137,7 @@ $ exit
 **Non-Interactive Mode:**
 
 ```bash
-$ echo "ls -la" | ./hsh
+$ echo "ls -la" | ./shs
 total 92
 drwxrwxr-x 3 user user  4096 Nov  4 10:30 .
 drwxrwxr-x 5 user user  4096 Nov  3 14:22 ..
@@ -148,9 +148,9 @@ $ cat commands.txt
 pwd
 ls
 env
-$ ./hsh < commands.txt
+$ ./shs < commands.txt
 /home/mustapha/advanced-unix-shell
-AUTHORS  README.md  hsh  main.c  shell.h
+AUTHORS  README.md  shs  shell.c  shell.h
 USER=user
 HOME=/home/user
 PATH=/usr/local/bin:/usr/bin:/bin
