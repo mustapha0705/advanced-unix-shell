@@ -151,8 +151,8 @@ env
 $ ./shs < commands.txt
 /home/mustapha/advanced-unix-shell
 AUTHORS  README.md  shs  shell.c  shell.h
-USER=user
-HOME=/home/user
+USER=mustapha
+HOME=/home/mustapha
 PATH=/usr/local/bin:/usr/bin:/bin
 ...
 ```
